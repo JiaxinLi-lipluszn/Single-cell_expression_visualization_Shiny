@@ -1,25 +1,24 @@
-#
-# This is a Shiny web application. You can run the application by clicking
-# the 'Run App' button above.
-#
-# Find out more about building applications with Shiny here:
-#
-#    http://shiny.rstudio.com/
-#
+# Author: Jiaxin Li
 
 library(shiny)
-
-# Where the data come in
-#source("helpers.R")
-#counties <- readRDS("counties.rds")
-#library(maps)
-#library(mapproj)
-
-# The bmcite dataset
 library(Seurat)
+library(readr)
 
-#InstallData("bmcite")
-load("./Data/Sestan.fetalHuman.Psychencode.Rdata")
+load("/Users/jiaxinli/Box/Li_Jiaxin/scRNA_visualize/Data/Sestan.fetalHuman.Psychencode.Rdata")
+expr_path = "/Users/jiaxinli/desktop/David/bmcite/rna_no_scale.csv"
+meta_path = "/Users/jiaxinli/desktop/David/bmcite/meta.csv"
+
+cpm2 = read_csv(expr_path)
+gene_list = cpm2[,1]
+cpm2 = cpm2[,-1]
+rownames(cpm2) <- unlist(gene_list)
+
+
+meta2 = read_csv(meta_path)
+cell_list = meta2[,1]
+meta2 = meta2[,-1]
+rownames(meta2) <- unlist(cell_list)
+
 r = row.names(meta2)
 for(i in 1:length(r)){
     r[i] = gsub("_", "-", r[i])
@@ -40,10 +39,17 @@ for(i in 1:length(c)){
 
 colnames(cpm2) = c
 
+c = colnames(cpm2)
+for(i in 1:length(c)){
+    c[i] = gsub("\\.", "-", c[i])
+}
+
+colnames(cpm2) = c
+
 
 bm <- CreateSeuratObject(counts = cpm2, project = "Yale", assay = "RNA", meta.data = meta2)
 
-
+cpm <- cpm2
 meta <- bm@meta.data
 
 available_var <- unlist(colnames(meta))
