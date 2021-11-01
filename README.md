@@ -22,3 +22,4 @@ path = /Users/jiaxinli/downloads/Single-cell_expression_visualization_Shiny-main
 runApp(path)
 
 ```
+Please change the path to the path where your `Single-cell_expression_visualization_Shiny-main` folder is.
