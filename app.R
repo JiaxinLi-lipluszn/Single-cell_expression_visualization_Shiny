@@ -19,13 +19,13 @@ cell_list = meta2[,1]
 meta2 = meta2[,-1]
 rownames(meta2) <- unlist(cell_list)
 
-r = row.names(meta2)
+r = rownames(meta2)
 for(i in 1:length(r)){
     r[i] = gsub("_", "-", r[i])
 }
-row.names(meta2) = r
+rownames(meta2) = r
 
-r = row.names(cpm2)
+r = rownames(cpm2)
 for(i in 1:length(r)){
     r[i] = gsub("\\|", "-", r[i])
 }
@@ -46,6 +46,8 @@ for(i in 1:length(c)){
 
 colnames(cpm2) = c
 
+meta2 = data.frame(meta2)
+rownames(meta2) <- unlist(colnames(cpm2))
 
 bm <- CreateSeuratObject(counts = cpm2, project = "Yale", assay = "RNA", meta.data = meta2)
 
